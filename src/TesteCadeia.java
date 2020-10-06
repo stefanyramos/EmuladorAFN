@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class TesteCadeia{
+	// classe responsável por testar uma cadeia dado um autonomo
 	private Automato aut;
 	private Transicao[] edgeTo;
 	private int[] cadeia; 
@@ -14,38 +15,35 @@ public class TesteCadeia{
 
 
 	public boolean ehAceita2(){
+	// função que verifica sea a cedeia é aceita. Utiliza a ideia de busca em largura para chegar a conclusão
+
 		int q0 = aut.getQ0(); //Estado inicial
 
 		Queue<Integer> queue = new LinkedList<>();
 		Queue<Integer> queue2 = new LinkedList<>();
 
-		Set<Integer> marked = new HashSet<>();  // set p não repetir simbolo na linha do teste
+		Set<Integer> marked = new HashSet<>();  // set p não repetir simbolo na "linha" do teste
 		queue.add(q0);
-		queue.addAll(aut.trLambda(q0));
+		queue.addAll(aut.trLambda(q0)); //caso o estado inicial tenha uma transição na string vazia
+										// adiciona os estados finais da transição
+										// na fila de estados a serem "testados" ao ler o primeiro smbolo
 
-		System.out.println("q inicial: " + queue.toString());
 
 		int i = 0;
-
-		while(i<cadeia.length){
-			System.out.println();
+		while(i<cadeia.length){ //loop para percorrer a cadeia
 			while(!queue.isEmpty()){
 				int s_lido = cadeia[i];
 				int q = queue.poll(); 
 
-				System.out.println("q: " + q);
-				System.out.println("s: " + s_lido);
-
 				for(Transicao t : aut.trsc(q)){
 					int qf = t.getQf(); //estado final 
-					int simbolo_t = t.getSimb();
+					int simbolo_t = t.getSimb(); //simbolo lido da cadeia
 					
-					 if((simbolo_t == s_lido) && !marked.contains(qf)){ // se o simbolo lido for igual a da transicao
-						System.out.println(t.toString());
+					 if((simbolo_t == s_lido) && !marked.contains(qf)){ // se o simbolo lido for igual ao da transicao
 						if(i == cadeia.length-1 && (aut.getQa().contains(qf))){ // chegou ao fim da cadeia e está num estado final
 							return true;
 						}
-						else if(i < cadeia.length-1 && !ehFolha(qf, cadeia[i+1])){ // caso cotrario, adiciona na lista de marcados e coloca na fila  
+						else if(i < cadeia.length-1 && !ehFolha(qf, cadeia[i+1])){ //adiciona na lista de marcados e coloca na fila se não for uma folha e ainda há simbolos a ler
 							queue2.add(qf);
 							marked.add(qf);
 						}
@@ -53,72 +51,13 @@ public class TesteCadeia{
 				}
 
 			}
-			queue.addAll(queue2);
-			queue2.clear();
-			System.out.println(queue.toString());
-			marked.clear();
+			queue.addAll(queue2); // adiciona os estados possíveis para o prox simbolo
+			queue2.clear();	// reseta a fila
+			marked.clear(); // reseta a listad e marcados
 			i++;
 		}
 		return false;
 
-	}
-
-
-
-	// verifica se a cadeia é aceita
-	public boolean ehAceita(){
-		int q0 = aut.getQ0(); //Estado inicial
-
-		Queue<Integer> queue = new LinkedList<>();
-		Queue<Integer> queue2 = new LinkedList<>();
-
-		Set<Integer> marked = new HashSet<>();  // set p não repetir simbolo na linha do teste
-		queue.add(q0);
-
-		int i = -1;
-
-		while(i<cadeia.length-1){
-			System.out.println();
-			while(!queue.isEmpty()){
-				i++;
-				int s_lido = cadeia[i];
-				int q = queue.poll(); // retira o estado inicial da pilha
-									  // e percorre a pilha com os estados "adjacentes"
-
-				System.out.println("q: " + q);
-				System.out.println("s: " + s_lido);
-
-				for(Transicao t : aut.trsc(q)){ // percorre a lista ligada de transiçãoes do estado q
-					int qf = t.getQf(); //estado final
-					int simbolo_t = t.getSimb();
-					
-					if(i==0 && simbolo_t==0 && s_lido != 0){
-						i --;
-						queue2.add(q);
-						queue2.add(qf);
-						//marked.add(qf);
-					}
-					
-					else if((simbolo_t == s_lido) && !marked.contains(qf)){ // se o simbolo lido for igual a da transicao
-						System.out.println(t.toString());
-						if(i == cadeia.length-1 && (aut.getQa().contains(qf))){ // chegou ao fim da cadeia e está num estado final
-							return true;
-						}
-						else if(i < cadeia.length-1 && !ehFolha(qf, cadeia[i+1])){ // caso cotrario, adiciona na lista de marcados e coloca na fila  
-							queue2.add(qf);
-							marked.add(qf);
-						}
-					}
-
-				}
-			}
-			queue.addAll(queue2);
-			queue2.clear();
-			System.out.println(queue.toString());
-			marked.clear();
-			//i++;
-		}
-		return false;
 	}
 
 
