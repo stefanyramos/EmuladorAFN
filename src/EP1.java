@@ -13,28 +13,61 @@ public class EP1{
 
 	public static void main(String[] args) throws FileNotFoundException{
 		
-		
+		File file = new File(args[0]);
 
-		Automato a1 = new Automato(3, 3, 6, 0, 1);
-		a1.addAceitacao(1);
+		Scanner sc = new Scanner(file);
+		PrintWriter out = new PrintWriter(args[1]);
 
-		a1.addTransicao(0, 0, 1);
-		a1.addTransicao(1, 1, 0);
-		a1.addTransicao(0, 1, 2);
-		a1.addTransicao(2, 2, 2);
-		a1.addTransicao(2, 1, 1);
-		a1.addTransicao(2, 2, 1);
+		int m = sc.nextInt();
 
-		a1.verificaLambda();
+		int q,s,t,q0,a;
 
-		a1.printAutomato();
+		for(int i = 0; i<m; i++){
+			q = sc.nextInt();	// n estados
+			s = sc.nextInt();	// n simbolos no alfabeto
+			t = sc.nextInt();	// n transicoes
+			q0 = sc.nextInt();	// estado inicial
+			a = sc.nextInt();	// n estados de aceitacao
 
-		int[] cadeia = {1, 2, 2, 1, 2, 2};
+			//System.out.printf("q:%d s:%d t:%d q0:%d a:%d \n", q,s,t,q0,a);
+			Automato A = new Automato(q, s, t, q0, a);
 
-		TesteCadeia t = new TesteCadeia(a1, cadeia);
+			for(int k=0; k<a; k++){
+				int e = sc.nextInt();
+				A.addAceitacao(e);
+			}
 
-		System.out.println(t.ehAceita());
+			for(int j=0; j<t; j++){
+				int qi = sc.nextInt();
+				int simb = sc.nextInt();
+				int qf = sc.nextInt();
+				A.addTransicao(qi, simb, qf);
+			}
 
+			A.verificaLambda();
+
+			//A.printAutomato();
+
+			int teste = sc.nextInt();
+
+			sc.nextLine();
+			for(int l=0; l<teste; l++){				
+				String cadeiaS = sc.nextLine();
+
+				String[] cadeiaS1 = cadeiaS.split(" ");
+				int[] cadeia = string2int(cadeiaS1);
+
+				TesteCadeia tc = new TesteCadeia(A, cadeia);
+				out.print((tc.ehAceita() ? 1 : 0) + " ");
+				
+			}
+			out.println();
+		}
+
+		out.close();
+
+	
+	
 
 	}
 }

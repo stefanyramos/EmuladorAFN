@@ -23,10 +23,10 @@ public class TesteCadeia{
 
 		while(!queue.isEmpty() && p<cadeia.length){
 			int s_lido = cadeia[p];
-			System.out.println("\nsimbolo: " + s_lido);
+			//System.out.println("\nsimbolo: " + s_lido);
 			int q = queue.poll(); // retira o estado inicial da pilha
 
-			System.out.println("q: " + q);
+			//System.out.println("q: " + q);
 								  // e percorre a pilha com os estados "adjacentes"
 			for(Transicao t : aut.trsc(q)){ // percorre a lista ligada de transiçãoes do estado q
 				int qf = t.getQf(); //estado final
@@ -35,15 +35,15 @@ public class TesteCadeia{
 				
 				if((simbolo_t == s_lido) && !marked.contains(qf)){
 					//marked.add(qf);
-					System.out.println("t " + t.toString());
+					//System.out.println("t " + t.toString());
 					if(p == cadeia.length-1 && (aut.getQa().contains(qf))){
 						return true;
 					}
-					if(p != cadeia.length-1){
+					if (p != cadeia.length-1){
 						queue.add(qf);
 						marked.add(qf);
 					}
-					System.out.println("queue: = " + queue.toString());
+					//System.out.println("queue: = " + queue.toString());
 
 				}
 			}
