@@ -44,6 +44,15 @@ public class Automato{
         return tr;
     }
 
+    public ArrayList<Integer> trLambda(int q){
+         ArrayList<Integer> tr = new ArrayList<>();
+
+        for(Transicao t : lista[q]){
+            if(t.getSimb() == 0)
+                tr.add(t.getQf());
+        }
+        return tr;
+    }
 
     public void verificaLambda(){
         ArrayList<Transicao> teste = new ArrayList<>();

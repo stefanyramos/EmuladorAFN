@@ -29,7 +29,6 @@ public class EP1{
 			q0 = sc.nextInt();	// estado inicial
 			a = sc.nextInt();	// n estados de aceitacao
 
-			//System.out.printf("q:%d s:%d t:%d q0:%d a:%d \n", q,s,t,q0,a);
 			Automato A = new Automato(q, s, t, q0, a);
 
 			for(int k=0; k<a; k++){
@@ -44,11 +43,10 @@ public class EP1{
 				A.addTransicao(qi, simb, qf);
 			}
 
-			A.verificaLambda();
+			A.verificaLambda(); //adiciona as transições com (Lambda) se houver
 
-			//A.printAutomato();
 
-			int teste = sc.nextInt();
+			int teste = sc.nextInt(); // numero de testes
 
 			sc.nextLine();
 			for(int l=0; l<teste; l++){				
@@ -57,8 +55,8 @@ public class EP1{
 				String[] cadeiaS1 = cadeiaS.split(" ");
 				int[] cadeia = string2int(cadeiaS1);
 
-				TesteCadeia tc = new TesteCadeia(A, cadeia);
-				out.print((tc.ehAceita() ? 1 : 0) + " ");
+				TesteCadeia tc = new TesteCadeia(A, cadeia); // testa a cadeia
+				out.print((tc.ehAceita2() ? 1 : 0) + " "); // printa o resultado no arquivo de saida
 				
 			}
 			out.println();
