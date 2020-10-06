@@ -9,6 +9,7 @@ public class Automato{
 	private ArrayList<Integer> qa;
 	private Integer q0; 
 	private Integer estados;
+    private ArrayList<Transicao> lambdas = new ArrayList();
 
 	public Automato(int q, int s, int t, int q0, int a){
 		this.lista = new LinkedList[q];
@@ -25,8 +26,42 @@ public class Automato{
 	}
 
 	public void addTransicao(int qi, int s, int qf){
-		lista[qi].add(new Transicao(qi, s, qf));
+		  lista[qi].add(new Transicao(qi, s, qf)); 
+
+          if(s == 0){
+                lambdas.add(new Transicao(qi, s, qf));
+          }     
+
 	}
+
+    public ArrayList<Transicao> transicoesEntre(int qi, int qf){
+        ArrayList<Transicao> tr = new ArrayList<>();
+
+        for(Transicao t : lista[qi]){
+            if(t.getQf() == qf && t.getSimb() != 0)
+                tr.add(t);
+        }
+        return tr;
+    }
+
+
+    public void verificaLambda(){
+        ArrayList<Transicao> teste = new ArrayList<>();
+
+        for(Transicao l : lambdas){
+            for(int i=0; i<estados; i++)
+                teste.addAll(transicoesEntre(i, l.getQi()));
+            
+            for(Transicao t2 : teste){
+                int q1 = t2.getQi();
+                int s1 = t2.getSimb();
+                lista[q1].add(new Transicao(q1, s1, l.getQf()));
+            }
+        }
+
+        
+            
+    }
 
 	public void addAceitacao(int qf){
 		qa.add(qf);
